@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:location/location.dart';
 
 class LocationInput extends StatelessWidget {
   const LocationInput({Key key}) : super(key: key);
@@ -9,6 +7,12 @@ class LocationInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String _previewImageUrl;
+
+    Future<void> _getCurrentUserLocation() async {
+      final locData = await Location().getLocation();
+      print(locData.latitude);
+      print(locData.longitude);
+    }
 
     return Column(
       children: [
@@ -34,7 +38,7 @@ class LocationInput extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextButton.icon(
-              onPressed: () {},
+              onPressed: _getCurrentUserLocation,
               icon: const Icon(Icons.location_on),
               label: const Text('Current Location'),
               style: TextButton.styleFrom(
