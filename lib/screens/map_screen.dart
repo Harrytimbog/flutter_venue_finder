@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+// ignore: depend_on_referenced_packages
 import 'package:latlong2/latlong.dart';
 import '../models/place.dart';
 
@@ -10,11 +11,12 @@ class MapScreen extends StatefulWidget {
   final PlaceLocation initialLocation;
   final bool isSelecting;
 
-  MapScreen({
+  const MapScreen({
+    Key key,
     this.initialLocation =
         const PlaceLocation(latitude: 37.422, longitude: -122.084),
     this.isSelecting = false,
-  });
+  }) : super(key: key);
 
   @override
   _MapScreenState createState() => _MapScreenState();
@@ -23,11 +25,11 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   LatLng _pickedLocation;
 
-  void _selectLocation(LatLng position) {
-    setState(() {
-      _pickedLocation = position;
-    });
-  }
+  // void _selectLocation(LatLng position) {
+  //   setState(() {
+  //     _pickedLocation = position;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +75,13 @@ class _MapScreenState extends State<MapScreen> {
             userAgentPackageName: 'com.example.app',
           ),
           MarkerLayer(
-            markers: _pickedLocation == null
+            markers: (_pickedLocation == null && widget.isSelecting)
                 ? []
                 : [
                     Marker(
-                      point: _pickedLocation,
+                      point: _pickedLocation ??
+                          LatLng(widget.initialLocation.latitude,
+                              widget.initialLocation.longitude),
                       builder: (ctx) => const Icon(
                         Icons.location_on,
                       ),
